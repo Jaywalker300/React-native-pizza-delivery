@@ -5,17 +5,21 @@ import { useContext } from 'react'
 import { useCart } from '@/providers/CartProviders'
 import { StyleSheet } from 'react-native'
 import CartListItem from '@/components/CartListItem'
+import Button from '@/components/Buttons'
 
 const CartScreen = () => {
-  const {items} = useCart()
+  const {items, total} = useCart()
 
   return (
     <View style={styles.container}>
      <FlatList
      data={items}
      renderItem={({item}) =><CartListItem cartItem={item}/>}
-     contentContainerStyle ={{ padding: 10, gap: 10}}
+     contentContainerStyle ={{ gap: 10}}
      />
+     
+     <Text style={{marginTop: 20, fontSize: 20, color: '#ffff', fontWeight: '500' }}> Total: ₦{total}</Text>
+     <Button text='Checkout'/>
 
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
     </View>

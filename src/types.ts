@@ -47,3 +47,7 @@ export type Profile = {
   id: string;
   group: string;
 };
+
+export type defaultPizzaImage = {
+  image: string;
+};

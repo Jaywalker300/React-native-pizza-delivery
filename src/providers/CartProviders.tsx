@@ -6,12 +6,14 @@ type CartType ={
  items: CartItem[],
  addItem: (product: Product, size: CartItem['size'])=> void,
  updateQuantity: (item: string, amount: -1 | 1) => void
+ total: number
 }
 
 const CartContext = createContext<CartType>({
     items: [],
     addItem: () =>{},
-    updateQuantity: ()=>{}
+    updateQuantity: ()=>{},
+    total: 0
 })
 
 const CartProvider = ({ children }: PropsWithChildren) => {
@@ -44,13 +46,16 @@ const CartProvider = ({ children }: PropsWithChildren) => {
             : {...item, quantity: item.quantity + amount}
         ).filter((item)=> item.quantity > 0)
     )
+}
 
-    }
+// implement the logic of calculating the total later.
+const total = items.reduce((
+    sum, item) => (sum += item.product.price * item.quantity),0
+)
 
-    console.log(items)
 
     return (
-        <CartContext.Provider value={{items, addItem, updateQuantity}}>
+        <CartContext.Provider value={{items, addItem, updateQuantity, total}}>
         {children}
         </CartContext.Provider>
     )
