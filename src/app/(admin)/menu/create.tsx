@@ -1,26 +1,40 @@
 import Button from '@/components/Buttons'
 import { useState } from 'react'
-import { View, Text, StyleSheet,TextInput,Image } from 'react-native'
+import { View, Text, StyleSheet,TextInput,Image,Alert } from 'react-native'
 import { defaultPizzaImage } from '@/components/ProductListItem'
-import { Product } from '@/types'
 import * as ImagePicker from 'expo-image-picker'
-import { Stack } from 'expo-router'
+import { Stack, useLocalSearchParams } from 'expo-router'
 
-// import { defaultPizzaImage } from '@/types'
 
-// export const defaultPizzaImage =
-//   'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png';
-// type ProductListItemProps = {
-//     product: Product
-//   }
 
 const CreateProductScreen = () => {
     const [name, setName] = useState('')
     const [price, setPrice] = useState('')
     const [image, setImage] = useState<string|null >(null)
     const [errors, setErrors] = useState('')
- 
+
+    const { id } = useLocalSearchParams()
+    const isUpdating = !!id
+    
+    const onSubmit =()=>{
+        if(isUpdating){
+            onUpdateCreate()//update
+        } else {
+            onCreate()
+        }
+    }
+
     const onCreate = ()=>{
+        console.log(`name is: ${name} and price is: ${price}`)
+        // save in the database
+
+        if (!validateInputs()){
+            return
+        }
+        resetFields()
+    }
+
+    const onUpdateCreate = ()=>{
         console.log(`name is: ${name} and price is: ${price}`)
         // save in the database
 
@@ -66,15 +80,32 @@ const CreateProductScreen = () => {
           quality: 1,
         })
 
-
         if(!result.canceled){
             setImage(result.assets[0].uri)
         }
     }
+    
+    const onDelete =()=>{
+        console.warn('Deleting')
+    }
+
+    const confirmDelete =()=>{
+        Alert.alert('Confirm', 'Are you sure you want to delete this product?',[
+            {
+                text: 'Cancel',
+            },
+
+            {
+                text: 'Delete',
+                style: 'destructive',
+                onPress: onDelete,
+            }
+        ])
+    }
 
   return (
     <View style={styles.container}>
-        <Stack.Screen options={{ title: "Create Product"}}/>
+        <Stack.Screen options={{ title: isUpdating ?  "Update Product" : "Create Product"}}/>
         <Image source={{uri: image || defaultPizzaImage}} style={styles.image}/>
         <Text onPress={pickImage} style={styles.textButton}> Select Image</Text>
 
@@ -94,7 +125,8 @@ const CreateProductScreen = () => {
         keyboardType='numeric'/>
 
         <Text style={{color:'red'}}>{errors}</Text>
-        <Button text='create' onPress={onCreate}/>
+        <Button text={ isUpdating? 'Update' : 'Create'} onPress={onSubmit}/>
+        {isUpdating && <Text onPress={confirmDelete} style={styles.textButton}> Delete </Text>}
     </View>
 
     
