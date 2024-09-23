@@ -1,7 +1,7 @@
 import { StyleSheet, Text, Pressable, Image } from 'react-native'
 import React, { } from 'react'
 import products from '@assets/data/products'
-import { Product } from '../types'
+import { Tables } from '../types'
 import { Link, useSegments } from 'expo-router'
 
 export const defaultPizzaImage =
@@ -9,7 +9,7 @@ export const defaultPizzaImage =
 
 // export const defaultPizzaImage = 
 type ProductListItemProps = {
-  product: Product
+  product: Tables<'products'>
 }
 
 const ProductListItem = ({ product }: ProductListItemProps) => {
