@@ -9,6 +9,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import Colors from "@/constants/Colors";
 import { useProduct } from '@/api/products'
 import { defaultPizzaImage } from '@/components/ProductListItem'
+import RemoteImage from '@/components/RemoteImages'
 
 
 
@@ -60,11 +61,16 @@ const ProductDetails = () => {
               </Pressable>
             </Link>
           ),}} />
-      <Stack.Screen options={{ title: product.name}}/>
-      <Image source={{ uri: product.image || defaultPizzaImage }} style = {styles.image}/>
+      <Stack.Screen options={{ title: product?.name}}/>
+      <RemoteImage
+          path={product?.image} 
+          fallback={defaultPizzaImage} 
+          style={styles.image}
+          resizeMode='contain'
+        />
 
-      <Text style={styles.title}> {product.name} </Text>
-      <Text style={styles.price}> ₦{product.price} </Text>
+      <Text style={styles.title}> {product?.name} </Text>
+      <Text style={styles.price}> ₦{product?.price} </Text>
     </View>
   )
 }
