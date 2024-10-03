@@ -18,61 +18,60 @@ const ProductDetails = () => {
 
   const [selectedSize, setSelectedSize] = useState<PizzaSize>('XL')
 
-  const {id: idString} = useLocalSearchParams()
-  const id = parseFloat(typeof idString === 'string'? idString : idString[0])
+  const { id: idString } = useLocalSearchParams()
+  const id = parseFloat(typeof idString === 'string' ? idString : idString[0])
 
-  const {data: product, error, isLoading } = useProduct(id)
+  const { data: product, error, isLoading } = useProduct(id)
 
 
   const sizes: PizzaSize[] = ['S', 'M', 'L', 'XL']
 
   const router = useRouter()
 
-  const addToCart =()=>{
-  console.log(product)
-  if (!product) return
+  const addToCart = () => {
+    if (!product) return
 
-  addItem(product, selectedSize)
-  
-  router.push('/cart')
+    addItem(product, selectedSize)
+
+    router.push('/cart')
   }
 
- if (isLoading){
-  return <ActivityIndicator size={75}/>
- }
- if (error){
-  return <Text> Failed to load product </Text>
- }
+  if (isLoading) {
+    return <ActivityIndicator size={75} />
+  }
+  if (error) {
+    return <Text> Failed to load product </Text>
+  }
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: product?.name}}/>
+      <Stack.Screen options={{ title: product?.name }} />
       <RemoteImage
-          path={product?.image} 
-          fallback={defaultPizzaImage} 
-          style={styles.image}
-          resizeMode='contain'
-        />
-      
+        path={product?.image}
+        fallback={defaultPizzaImage}
+        style={styles.image}
+        resizeMode='contain'
+      />
+
       <Text style={styles.title}> Select Size</Text>
 
       <View style={styles.sizes} >
-      {sizes.map((size)=> ( 
-        <Pressable onPress={()=>{setSelectedSize(size)}}
-         style={[
-          styles.size,
-          {
-            backgroundColor: selectedSize === size ? 'red' : 'green' 
-          }
-          ]} key={size}>
+        {sizes.map((size) => (
+          <Pressable onPress={() => { setSelectedSize(size) }}
+            style={[
+              styles.size,
+              {
+                backgroundColor: selectedSize === size ? 'red' : 'green'
+              }
+            ]} key={size}>
             <Text style={styles.sizeText} >{size} </Text>
-        </Pressable>
-       ))
-      }
+          </Pressable>
+        ))
+        }
       </View>
 
       <Text style={styles.price}> ₦{product.price} </Text>
-      <Button onPress={addToCart} text='Add to Cart'/>
+      <Button onPress={addToCart} text='Add to Cart' />
     </View>
   )
 }
@@ -108,7 +107,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     borderRadius: 25,
     alignItems: 'center',
-    justifyContent:'center',
+    justifyContent: 'center',
     fontSize: 20,
   },
 

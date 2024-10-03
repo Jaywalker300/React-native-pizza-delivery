@@ -4,7 +4,7 @@ import { supabase } from '../lib/supabase';
 
 type RemoteImageProps = {
   path?: string | null;
-  fallback?: string;
+  fallback: string;
 } & Omit<ComponentProps<typeof Image>, 'source'>;
 
 const RemoteImage = ({ path, fallback, ...imageProps }: RemoteImageProps) => {

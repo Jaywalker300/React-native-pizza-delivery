@@ -17,10 +17,10 @@ type CartType = {
 
 const CartContext = createContext<CartType>({
   items: [],
-  addItem: () => {},
-  updateQuantity: () => {},
+  addItem: () => { },
+  updateQuantity: () => { },
   total: 0,
-  checkout: () => {},
+  checkout: () => { },
 });
 
 const CartProvider = ({ children }: PropsWithChildren) => {
@@ -78,9 +78,9 @@ const CartProvider = ({ children }: PropsWithChildren) => {
   };
 
   const saveOrderItems = (order: Tables<"orders">) => {
-   
 
-    const orderItems = items.map((cartItem)=>({
+
+    const orderItems = items.map((cartItem) => ({
       order_id: order.id,
       product_id: cartItem.product_id,
       quantity: cartItem.quantity,
@@ -91,7 +91,6 @@ const CartProvider = ({ children }: PropsWithChildren) => {
       orderItems,
       {
         onSuccess() {
-          console.log(order);
           clearCart();
           router.push(`/(user)/orders/${order.id}`);
         },

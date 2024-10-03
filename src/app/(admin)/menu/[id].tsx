@@ -4,7 +4,7 @@ import { Stack, useLocalSearchParams, useRouter } from 'expo-router'
 import { useState } from 'react'
 import { useCart } from '@/providers/CartProviders'
 import { PizzaSize } from '@/types'
-import { Link} from "expo-router";
+import { Link } from "expo-router";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "@/constants/Colors";
 import { useProduct } from '@/api/products'
@@ -16,38 +16,39 @@ import RemoteImage from '@/components/RemoteImages'
 
 const ProductDetails = () => {
   const { addItem } = useCart()
-  const sizes: PizzaSize[] = ['S', 'M', 'L', 'XL']  
+  const sizes: PizzaSize[] = ['S', 'M', 'L', 'XL']
 
   const [selectedSize, setSelectedSize] = useState<PizzaSize>('XL')
 
-  const {id: idString} = useLocalSearchParams()
-  const id = parseFloat(typeof idString === 'string'? idString : idString[0])
+  const { id: idString } = useLocalSearchParams()
+  const id = parseFloat(typeof idString === 'string' ? idString : idString[0])
 
-  const {data: product, error, isLoading } = useProduct(id)
+  const { data: product, error, isLoading } = useProduct(id)
 
 
   const router = useRouter()
 
-  const addToCart =()=>{
-  
-  if (!product) return
+  const addToCart = () => {
 
-  addItem(product, selectedSize)
-  
-  router.push('/cart')
+    if (!product) return
+
+    addItem(product, selectedSize)
+
+    router.push('/cart')
   }
 
-  if (isLoading){
-    return <ActivityIndicator/>
+  if (isLoading) {
+    return <ActivityIndicator />
   }
-  if (error){
+  if (error) {
     return <Text> Failed to fetch product</Text>
   }
-  
+
   return (
     <View style={styles.container}>
-       <Stack.Screen 
-          options={{title:"Menu",headerRight: () => (
+      <Stack.Screen
+        options={{
+          title: "Menu", headerRight: () => (
             <Link href={`/(admin)/menu/create?id=${id}`} asChild>
               <Pressable>
                 {({ pressed }) => (
@@ -60,14 +61,15 @@ const ProductDetails = () => {
                 )}
               </Pressable>
             </Link>
-          ),}} />
-      <Stack.Screen options={{ title: product?.name}}/>
+          ),
+        }} />
+      <Stack.Screen options={{ title: product?.name }} />
       <RemoteImage
-          path={product?.image} 
-          fallback={defaultPizzaImage} 
-          style={styles.image}
-          resizeMode='contain'
-        />
+        path={product?.image}
+        fallback={defaultPizzaImage}
+        style={styles.image}
+        resizeMode='contain'
+      />
 
       <Text style={styles.title}> {product?.name} </Text>
       <Text style={styles.price}> ₦{product?.price} </Text>
@@ -90,7 +92,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 40,
     fontWeight: 'bold',
-    alignSelf: 'center',  
+    alignSelf: 'center',
   },
 
   sizeText: {
